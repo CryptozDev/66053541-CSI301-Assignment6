@@ -1,0 +1,351 @@
+/* ============================================================
+   Bank DApp — Neobank Teller
+   โลกภาพ: แอปธนาคารดิจิทัลมินิมอล — พื้นเทาอ่อนเย็น การ์ดขาว
+   เส้นบาง 1px + เงานุ่มหนึ่งขั้น accent เขียวมรกตเฉพาะจุดที่มีความหมาย
+   ============================================================ */
+
+:root {
+  --ground: #eef2f6;
+  --surface: #ffffff;
+  --line: #e2e8f0;
+  --ink: #0f172a;
+  --ink-2: #475569;
+  --ink-3: #64748b;
+  --accent: #0f766e;        /* เขียวมรกตเข้ม: ปุ่มหลัก / สถานะสำเร็จ */
+  --accent-bright: #0d9488; /* ของตกแต่ง/ไอคอน/จุดสถานะ */
+  --accent-tint: #ccfbf1;
+  --danger: #b91c1c;
+  --danger-tint: #fee2e2;
+  --radius: 16px;
+  --radius-sm: 12px;
+  --shadow-1: 0 1px 2px rgba(15, 23, 42, 0.05), 0 10px 28px -18px rgba(15, 23, 42, 0.18);
+  --shadow-2: 0 2px 4px rgba(15, 23, 42, 0.06), 0 16px 36px -20px rgba(15, 23, 42, 0.22);
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  font-family: "Anuphan", "Segoe UI", Tahoma, sans-serif;
+  background:
+    radial-gradient(1100px 480px at 82% -12%, rgba(13, 148, 136, 0.07), transparent 62%),
+    var(--ground);
+  color: var(--ink);
+  min-height: 100vh;
+  padding-bottom: 76px; /* เผื่อแถบสถานะลอยด้านล่าง */
+  line-height: 1.55;
+}
+
+/* พื้นผิวของเบราว์เซอร์ก็เป็นส่วนของดีไซน์ */
+::selection { background: var(--accent-tint); color: var(--ink); }
+
+*::-webkit-scrollbar { width: 12px; height: 12px; }
+*::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 8px; border: 3px solid var(--ground); }
+*::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+input { caret-color: var(--accent); }
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+input[type="number"] { -moz-appearance: textfield; appearance: textfield; }
+
+:focus-visible { outline: 2px solid var(--accent-bright); outline-offset: 2px; border-radius: 6px; }
+
+/* ---------- แถบหัว ---------- */
+
+.topbar {
+  height: 76px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 0 48px;
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--line);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.brand { display: flex; align-items: center; gap: 12px; min-width: 0; }
+
+.brand-mark {
+  width: 34px; height: 34px;
+  border-radius: 10px;
+  background: var(--accent);
+  color: #fff;
+  display: inline-flex; align-items: center; justify-content: center;
+  flex: none;
+}
+
+.brand-name { font-size: 18px; font-weight: 700; letter-spacing: -0.01em; }
+
+.student {
+  font-size: 13.5px;
+  color: var(--ink-2);
+  padding-left: 14px;
+  border-left: 1px solid var(--line);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.wallet { display: flex; align-items: center; gap: 14px; }
+
+.account-info {
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--ink-2);
+  font-variant-numeric: tabular-nums;
+  max-width: 260px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ---------- ปุ่ม ---------- */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  padding: 12px 22px;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 160ms var(--ease-out), border-color 160ms var(--ease-out),
+              box-shadow 160ms var(--ease-out), transform 120ms var(--ease-out);
+}
+.btn:active { transform: translateY(1px); }
+
+.btn-primary {
+  background: var(--accent);
+  color: #fff;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.14);
+}
+.btn-primary:hover {
+  background: #115e59;
+  box-shadow: 0 4px 14px -6px rgba(15, 23, 42, 0.28);
+}
+
+.btn-danger {
+  background: transparent;
+  color: var(--danger);
+  border-color: #fca5a5;
+}
+.btn-danger:hover { background: var(--danger-tint); border-color: var(--danger); }
+
+.btn-block { width: 100%; }
+
+.btn-quiet {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: none;
+  background: transparent;
+  color: var(--accent);
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 9px 14px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background-color 160ms var(--ease-out);
+}
+.btn-quiet:hover { background: var(--accent-tint); }
+
+/* ---------- โครงหน้า ---------- */
+
+main {
+  max-width: 1060px;
+  margin: 0 auto;
+  padding: 40px 32px 0;
+}
+
+/* ---------- แจ้งยอด ---------- */
+
+.statement {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-1);
+  padding: 34px 38px 28px;
+  animation: enter 520ms var(--ease-out) both;
+}
+
+.statement-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.balance {
+  font-family: "Azeret Mono", "Anuphan", monospace;
+  font-size: clamp(40px, 6.4vw, 68px);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+  font-variant-numeric: tabular-nums;
+}
+
+.statement-foot {
+  margin-top: 26px;
+  padding-top: 22px;
+  border-top: 1px solid var(--line);
+}
+
+.statement-foot label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink-2);
+  margin-bottom: 8px;
+}
+
+input[type="text"],
+.amount-field input {
+  width: 100%;
+  border: 1px solid #cbd5e1;
+  border-radius: var(--radius-sm);
+  background: #f8fafc;
+  padding: 12px 15px;
+  font-family: inherit;
+  font-size: 15px;
+  color: var(--ink);
+  transition: border-color 160ms var(--ease-out), background-color 160ms var(--ease-out),
+              box-shadow 160ms var(--ease-out);
+}
+input:hover { border-color: #94a3b8; }
+input:focus {
+  outline: none;
+  border-color: var(--accent-bright);
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.18);
+}
+input::placeholder { color: var(--ink-3); }
+
+#contractAddress { font-variant-numeric: tabular-nums; letter-spacing: 0.01em; }
+
+/* ---------- พื้นที่ฝาก/ถอน ---------- */
+
+.actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-top: 24px;
+  animation: enter 520ms var(--ease-out) 90ms both;
+}
+
+.panel {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-1);
+  padding: 28px 30px;
+  transition: box-shadow 200ms var(--ease-out);
+}
+.panel:hover { box-shadow: var(--shadow-2); }
+
+.panel-title {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  margin-bottom: 18px;
+}
+
+.panel-icon {
+  width: 30px; height: 30px;
+  border-radius: 9px;
+  display: inline-flex; align-items: center; justify-content: center;
+  flex: none;
+}
+.panel-icon-in  { background: var(--accent-tint); color: var(--accent); }
+.panel-icon-out { background: var(--danger-tint); color: var(--danger); }
+
+.amount-field { position: relative; margin-bottom: 16px; }
+.amount-field .unit {
+  position: absolute;
+  right: 15px; top: 50%;
+  transform: translateY(-50%);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink-3);
+  pointer-events: none;
+}
+.amount-field input { padding-right: 54px; font-variant-numeric: tabular-nums; }
+
+.hint {
+  margin-top: 12px;
+  font-size: 13px;
+  color: var(--ink-3);
+  text-align: center;
+}
+
+/* ---------- แถบสถานะ ---------- */
+
+.statusbar {
+  position: fixed;
+  left: 0; right: 0; bottom: 0;
+  z-index: 10;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 56px;
+  padding: 8px 24px;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(10px);
+  border-top: 1px solid var(--line);
+}
+
+.status {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--ink-2);
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+  max-width: 900px;
+  overflow-wrap: break-word;
+}
+.status.ok    { color: var(--accent); animation: rise 420ms var(--ease-out); }
+.status.error { color: var(--danger); animation: rise 420ms var(--ease-out); }
+
+/* ---------- โมชัน: ช่วงเปิดหน้าครั้งเดียว + สถานะลุกขึ้นตั้ง ---------- */
+
+@keyframes enter {
+  from { opacity: 0; transform: translateY(14px); filter: blur(3px); }
+  to   { opacity: 1; transform: none; filter: none; }
+}
+
+@keyframes rise {
+  from { opacity: 0; transform: translateY(9px); }
+  60%  { opacity: 1; }
+  to   { opacity: 1; transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+
+/* ---------- จอแคบ ---------- */
+
+@media (max-width: 860px) {
+  .topbar { height: auto; padding: 12px 20px; flex-wrap: wrap; }
+  .student { border-left: none; padding-left: 0; }
+  .wallet { width: 100%; justify-content: space-between; }
+  .account-info { max-width: 50%; }
+  main { padding: 24px 16px 0; }
+  .statement { padding: 24px 20px; }
+  .statement-head { flex-direction: column; align-items: flex-start; gap: 10px; }
+  .actions { grid-template-columns: 1fr; gap: 16px; }
+  .panel { padding: 22px 18px; }
+}
